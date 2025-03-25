@@ -225,6 +225,15 @@ az network application-gateway probe create -g fd-appg-pathlimit --gateway-name 
 az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -- -n urlProbe --protocol http --host "127.0.0.1" --path "/"
 
 ```
+#### Configure Application Gateway
+Paths will be in Portal to better understand the concepts
+
+ #### Create Listeners
+
+```bash
+ az network application-gateway http-listener create -g fd-appg-pathlimit --gateway-name appgtw-A --frontend-port 80 -n default80
+
+ ```
 
 #### Creating Front Door
 ```bash
