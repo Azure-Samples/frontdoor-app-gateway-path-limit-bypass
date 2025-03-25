@@ -108,12 +108,63 @@ kubectl get ingress -n aks-app
 
 ```
 
+#### Create Cluster 02
+
+```bash
+# Create AKS 03
+az aks create --resource-group fd-appg-pathlimit --name aks03 --enable-app-routing --enable-managed-identity --node-count 1 --generate-ssh-keys
+
+#credentials
+az aks get-credentials -n aks03 -g fd-appg-pathlimit
+
+#namespace
+kubectl create namespace aks-app
+
+#Deployment
+kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/aks03.yaml -n aks-app
+
+#service
+kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/service.yaml -n aks-app
+
+#ingress
+kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/ingress03.yaml -n aks-app
+
+#verify
+kubectl get ingress -n aks-app
+
+```
+#### Create Cluster 04
+
+```bash
+# Create AKS 04
+az aks create --resource-group fd-appg-pathlimit --name aks04 --enable-app-routing --enable-managed-identity --node-count 1 --generate-ssh-keys
+
+#credentials
+az aks get-credentials -n aks04 -g fd-appg-pathlimit
+
+#namespace
+kubectl create namespace aks-app
+
+#Deployment
+kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/aks04.yaml -n aks-app
+
+#service
+kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/service.yaml -n aks-app
+
+#ingress
+kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/ingress04.yaml -n aks-app
+
+#verify
+kubectl get ingress -n aks-app
+
+```
+
 #### Create Application Gateways
 
 ```bash
 
 #create vnet
-az network vnet create --name pathlimit-vnet --resource-group fd-appg-pathlimit --location brazilsouth --address-prefix 10.22.0.0/16 --subnet-name appgtwsubnet --subnet-prefix 10.22.0.0/24
+az network vnet create --name pathlimit-vnet --resource-group fd-appg-pathlimit --location brazilsouth --address-prefix 10.24.0.0/16 --subnet-name appgtwsubnet --subnet-prefix 10.24.0.0/24
 
 #create nsg with app gateway rules
 ####
@@ -135,10 +186,7 @@ az network application-gateway create --name appgtw-B --location brazilsouth --r
 
 #### Creating backend pools for Application Gateways
 ```bash
-
-
-
-#AKS01
+#Backend Pool for AKS01
 az aks get-credentials -n aks01 -g fd-appg-pathlimit
 
 ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
