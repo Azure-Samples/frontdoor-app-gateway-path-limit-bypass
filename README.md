@@ -108,7 +108,7 @@ kubectl get ingress -n aks-app
 
 ```
 
-#### Create Cluster 02
+#### Create Cluster 03
 
 ```bash
 # Create AKS 03
@@ -201,21 +201,32 @@ ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBala
 
 az network application-gateway address-pool create -g fd-appg-pathlimit --gateway-name appgtw-A -n App02 --servers $ADDRESS
 
+#AKS03
+az aks get-credentials -n aks03 -g fd-appg-pathlimit
 
+ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
 
+az network application-gateway address-pool create -g fd-appg-pathlimit --gateway-name appgtw-B -n App03 --servers $ADDRESS
+
+#AKS04
+az aks get-credentials -n aks04 -g fd-appg-pathlimit
+
+ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
+
+az network application-gateway address-pool create -g fd-appg-pathlimit --gateway-name appgtw-B -n App04 --servers $ADDRESS
 
 #create health probe Application Gateway Segment A
-az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -n urlProbe --protocol http --host aks.oikawa.dev.br --path "/"
+az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -n urlProbe --protocol http --host "127.0.0.1" --path "/"
 
 
 #create health probe Application Gateway Segment B
-az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -n urlProbe --protocol http --host aks.oikawa.dev.br --path "/"
+az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -- -n urlProbe --protocol http --host "127.0.0.1" --path "/"
 
 ```
 
 #### Creating Front Door
 ```bash
-az afd profile create --profile-name pathlimit --resource-group fd-appg-pathlimit --sku Standard_AzureFrontDoor
+az afd profile create --profile-name fd-pathlimit --resource-group fd-appg-pathlimit --sku Premium_AzureFrontDoor
 
 az afd endpoint create --resource-group fd-appg-pathlimit --endpoint-name pathlimit --profile-name pathlimit --enabled-state Enabled
 
