@@ -162,12 +162,16 @@ kubectl get ingress -n aks-app
 #### Create Application Gateways
 
 ```bash
+#create nsg with app gateway rules
+az network nsg create -g fd-appg-pathlimit -n pathlimit-nsg
+
+az network nsg rule create -g fd-appg-pathlimit --nsg-name pathlimit-nsg -n app --priority 500 --source-address-prefixes Internet --destination-port-ranges 80 443 --access Allow --protocol Tcp --description "Allow Internet to apps"
+
+az network nsg rule create -g fd-appg-pathlimit --nsg-name pathlimit-nsg -n appgtw-mgr --priority 501 --source-address-prefixes GatewayManager --destination-port-ranges 65200-65535 --access Allow --protocol Tcp --description "Allow gateway manager inbond as per doc"
 
 #create vnet
-az network vnet create --name pathlimit-vnet --resource-group fd-appg-pathlimit --location brazilsouth --address-prefix 10.24.0.0/16 --subnet-name appgtwsubnet --subnet-prefix 10.24.0.0/24
+az network vnet create --name pathlimit-vnet --resource-group fd-appg-pathlimit --location brazilsouth --address-prefix 10.24.0.0/16 --subnet-name appgtwsubnet --nsg pathlimit-nsg --subnet-prefix 10.24.0.0/24
 
-#create nsg with app gateway rules
-####
 
 #create public ip Gateway Segment A
 az network public-ip create --resource-group fd-appg-pathlimit --name appgtw-a-pip --allocation-method Static --sku Standard
@@ -180,8 +184,6 @@ az network application-gateway create --name appgtw-A --location brazilsouth --r
 
 #create Application Gateway Segment B
 az network application-gateway create --name appgtw-B --location brazilsouth --resource-group fd-appg-pathlimit --capacity 2 --sku Standard_v2 --public-ip-address appgtw-b-pip --vnet-name pathlimit-vnet --subnet appgtwsubnet --priority 100
-
-
 ```
 
 #### Creating backend pools for Application Gateways
