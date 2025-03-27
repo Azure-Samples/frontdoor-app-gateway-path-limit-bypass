@@ -42,12 +42,16 @@ For lab proposes, in this sample it will use AKS for backend applications (under
 || /App04|
 
 ![Environment](./media/1.5.png)
-## Prerequisites
+
+## Create enviroment
+Major part of the environment is created by Azure CLi, and some another is by Azure Portal, for better undertanding of concepts.
+
+### Prerequisites
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 
 ---
 
-## Configure Resource Group
+### Configure Resource Group
 
 Set up the virtual networking for the environment
 
@@ -57,7 +61,7 @@ az group create \
     --location brazilsouth
 ```
 
-#### Create Cluster 01
+### Create Cluster 01
 
 ```bash
 # Create AKS 01
@@ -82,7 +86,7 @@ kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-ga
 kubectl get ingress -n aks-app
 
 ```
-#### Create Cluster 02
+### Create Cluster 02
 
 ```bash
 # Create AKS 02
@@ -108,7 +112,7 @@ kubectl get ingress -n aks-app
 
 ```
 
-#### Create Cluster 03
+### Create Cluster 03
 
 ```bash
 # Create AKS 03
@@ -133,7 +137,7 @@ kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-ga
 kubectl get ingress -n aks-app
 
 ```
-#### Create Cluster 04
+### Create Cluster 04
 
 ```bash
 # Create AKS 04
@@ -159,7 +163,7 @@ kubectl get ingress -n aks-app
 
 ```
 
-#### Create Application Gateways
+### Create Application Gateways
 
 ```bash
 #create nsg with app gateway rules
@@ -186,7 +190,7 @@ az network application-gateway create --name appgtw-A --location brazilsouth --r
 az network application-gateway create --name appgtw-B --location brazilsouth --resource-group fd-appg-pathlimit --capacity 2 --sku Standard_v2 --public-ip-address appgtw-b-pip --vnet-name pathlimit-vnet --subnet appgtwsubnet --priority 100
 ```
 
-#### Creating backend pools for Application Gateways
+### Creating backend pools for Application Gateways
 ```bash
 #Backend Pool for AKS01
 az aks get-credentials -n aks01 -g fd-appg-pathlimit
@@ -196,21 +200,21 @@ ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBala
 az network application-gateway address-pool create -g fd-appg-pathlimit --gateway-name appgtw-A -n App01 --servers $ADDRESS
 
 
-#AKS02
+#Backend Pool for AKS02
 az aks get-credentials -n aks02 -g fd-appg-pathlimit
 
 ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
 
 az network application-gateway address-pool create -g fd-appg-pathlimit --gateway-name appgtw-A -n App02 --servers $ADDRESS
 
-#AKS03
+#Backend Pool for AKS03
 az aks get-credentials -n aks03 -g fd-appg-pathlimit
 
 ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
 
 az network application-gateway address-pool create -g fd-appg-pathlimit --gateway-name appgtw-B -n App03 --servers $ADDRESS
 
-#AKS04
+#Backend Pool for AKS04
 az aks get-credentials -n aks04 -g fd-appg-pathlimit
 
 ADDRESS=$(kubectl get ingress -n aks-app -o jsonpath='{.items[0].status.loadBalancer.ingress[0].ip}')
@@ -225,17 +229,24 @@ az network application-gateway probe create -g fd-appg-pathlimit --gateway-name 
 az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -- -n urlProbe --protocol http --host "127.0.0.1" --path "/"
 
 ```
-#### Configure Application Gateway
-Paths will be in Portal to better understand the concepts
+### Configure Application Gateway
+Some configuration will be in Portal to better understand the concepts
 
-1. Edit current Listner to port 8080.
+#### Edit current listener
+1. In [Azure Portal](https://portal.azure.com), search for Application Gateway.
+1. In left menu, click on Listeners.
+1. Click on Add Listener, click on current listener, edit port to 8080.
+1. Click on Save.
 
 ![Environment](./media/3.AppGEditlistener3.png)
 
-1. Add a listener on port 80.
-    - Go to: Application Gateway / Listeners / Add listener
+#### Add a listener on port 80.
+1. Go to: Application Gateway / Listeners / Add listener
     
 ![Environment](./media/3.AddListener.png)
+
+2. Add a listener according the values:
+
 |Name|Value|
 |-------|-----|
 |**Listener name**|appGateway80Listener|
@@ -246,21 +257,36 @@ Paths will be in Portal to better understand the concepts
 |**Bad Gateway - 502**|*leave blank*|
 |**Forbidden - 403**|*leave blank*|
 
+3. Click Add.
 
+#### Add a rule
 
-1. Add a rule
+1. In left menu, click on "Rules" / "+ Routing Rule"
+In Add routing rule page, add folowing values: 
 
 |Name|Value|
 |-------|-----|
 |**Rule name**|App-rules|
 |**Priority**|200|
 |**Listener**|appGateway80Listener|
+
+In Tab Backend targets, add the values of the following table:
+
+![Environment](./media/rule01.png)
+
+|Name|Value|
+|--------------|-----|
 |**[Backend targets tab] Target Type**|Backend pool|
 |**[Backend targets tab] Backend target**|App01|
 |**[Backend targets tab] Backend target**|appGatewayBackendHttpSettings|
 |**[Backend targets tab] Add multiple targets to create a path-based rule**|*click to add*|
 
-1. Add Routing rules for App01
+![Environment](./media/rule02.png)
+
+Click "Add multiple targets to create a path-based rule"
+![Environment](./media/rule03.png)
+
+Add a route for App01 according this values: 
 
 |Name|Value|
 |-------|-----|
@@ -270,8 +296,11 @@ Paths will be in Portal to better understand the concepts
 |**Backend settings**|appGatewayBackendHttpSettings|
 |**Backend target**|App01|
 
-Click Add.
-Then, cllick again in "**Add multiple targets to create a path-based rule**", and App a routing rule for App02:
+![Environment](./media/rule04.png)
+
+Click Save.
+
+Then, cllick again in "**Add multiple targets to create a path-based rule**", and App a routing rule for App02, accoring the following values
 
 |Name|Value|
 |-------|-----|
@@ -282,14 +311,14 @@ Then, cllick again in "**Add multiple targets to create a path-based rule**", an
 |**Backend target**|App02|
 
 Click Add.
-Then, click in Add again, to Add entire Routing Rule
+Final result shoud be somehting like this:
 
- #### Create Listeners
+![Environment](./media/rule05.png)
 
-```bash
- az network application-gateway http-listener create -g fd-appg-pathlimit --gateway-name appgtw-A --frontend-port 80 -n default80
 
- ```
+Final, click in Add, to Add entire Routing Rule with paths:
+
+
 
 #### Creating Front Door
 ```bash
