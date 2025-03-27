@@ -230,11 +230,12 @@ Paths will be in Portal to better understand the concepts
 
 1. Edit current Listner to port 8080.
 
-![Environment](./media/3appgeditlistener3.png")
+![Environment](./media/3.AppGEditlistener3.png)
 
 1. Add a listener on port 80.
     - Go to: Application Gateway / Listeners / Add listener
-
+    
+![Environment](./media/3.AddListener.png)
 |Name|Value|
 |-------|-----|
 |**Listener name**|appGateway80Listener|
@@ -245,7 +246,7 @@ Paths will be in Portal to better understand the concepts
 |**Bad Gateway - 502**|*leave blank*|
 |**Forbidden - 403**|*leave blank*|
 
-![Environment](./media/3.AddListener.png")
+
 
 1. Add a rule
 
