@@ -229,7 +229,7 @@ az network application-gateway probe create -g fd-appg-pathlimit --gateway-name 
 az network application-gateway probe create -g fd-appg-pathlimit --gateway-name appgtw-A -- -n urlProbe --protocol http --host "127.0.0.1" --path "/"
 
 ```
-### Configure Application Gateway
+### Configure Application Gateway for Segment A
 Some configuration will be in Portal to better understand the concepts
 
 #### Edit current listener
@@ -260,6 +260,7 @@ Some configuration will be in Portal to better understand the concepts
 3. Click Add.
 
 #### Add a rule
+This the configuration that will route the /App01 and App02 to respecitives backends of applications.
 
 1. In left menu, click on "Rules" / "+ Routing Rule"
 In Add routing rule page, add folowing values: 
@@ -270,7 +271,7 @@ In Add routing rule page, add folowing values:
 |**Priority**|200|
 |**Listener**|appGateway80Listener|
 
-In Tab Backend targets, add the values of the following table:
+2. In Tab Backend targets, add the values of the following table:
 
 ![Environment](./media/rule01.png)
 
@@ -283,10 +284,11 @@ In Tab Backend targets, add the values of the following table:
 
 ![Environment](./media/rule02.png)
 
-Click "Add multiple targets to create a path-based rule"
+3. Click "Add multiple targets to create a path-based rule"
+
 ![Environment](./media/rule03.png)
 
-Add a route for App01 according this values: 
+4. Add a route for App01 according this values: 
 
 |Name|Value|
 |-------|-----|
@@ -298,9 +300,9 @@ Add a route for App01 according this values:
 
 ![Environment](./media/rule04.png)
 
-Click Save.
+5. Click Save.
 
-Then, cllick again in "**Add multiple targets to create a path-based rule**", and App a routing rule for App02, accoring the following values
+6. Then, cllick again in "**Add multiple targets to create a path-based rule**", and App a routing rule for App02, accoring the following values
 
 |Name|Value|
 |-------|-----|
@@ -310,15 +312,16 @@ Then, cllick again in "**Add multiple targets to create a path-based rule**", an
 |**Backend settings**|appGatewayBackendHttpSettings|
 |**Backend target**|App02|
 
-Click Add.
-Final result shoud be somehting like this:
+7. Click Add.
+8. Final result shoud be somehting like this:
 
 ![Environment](./media/rule05.png)
 
 
-Final, click in Add, to Add entire Routing Rule with paths:
+9. Final, click in Add, to Add entire Routing Rule with paths to App01 and App02
 
-
+### Configure Application Gateway appgtw-B for Segment B
+Now, repeat the last sections to configure the Application Gateway for Segment B
 
 #### Creating Front Door
 ```bash
@@ -341,11 +344,10 @@ az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-nam
 [Application Gateway documentation](https://learn.microsoft.com/en-us/azure/application-gateway/overview)
 
 
-## Contributors
+## Feedbacks
 
-*This article will be maintained by Microsoft. It was originally written by the following contributors.*
-
-Principal authors:
+This quickstart is a open source IP. Your feedback is essential to improve services and documentation. 
+You can share your feedback either by dropping us an issue in this repo or sending us a message on LinkedIn profiles, to one of the principal authors:
 
 - [Marcos Hirohsi Oikawa](https://www.linkedin.com/in/marcos-hiroshi-oikawa) | Technical Specialist
 - [Leandro Oliveira](https://www.linkedin.com/in/so-leandro/) | Technical Specialist
