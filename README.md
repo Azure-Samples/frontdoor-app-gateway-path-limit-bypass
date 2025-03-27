@@ -228,6 +228,61 @@ az network application-gateway probe create -g fd-appg-pathlimit --gateway-name 
 #### Configure Application Gateway
 Paths will be in Portal to better understand the concepts
 
+1. Edit current Listner to port 8080.
+
+![Environment](./media/3appgeditlistener3.png")
+
+1. Add a listener on port 80.
+    - Go to: Application Gateway / Listeners / Add listener
+
+|Name|Value|
+|-------|-----|
+|**Listener name**|appGateway80Listener|
+|**Frontend IP**|Public|
+|**Protocol**|HTTP|
+|**Port**|80|
+|**Listener type**|Basic|
+|**Bad Gateway - 502**|*leave blank*|
+|**Forbidden - 403**|*leave blank*|
+
+![Environment](./media/3.AddListener.png")
+
+1. Add a rule
+
+|Name|Value|
+|-------|-----|
+|**Rule name**|App-rules|
+|**Priority**|200|
+|**Listener**|appGateway80Listener|
+|**[Backend targets tab] Target Type**|Backend pool|
+|**[Backend targets tab] Backend target**|App01|
+|**[Backend targets tab] Backend target**|appGatewayBackendHttpSettings|
+|**[Backend targets tab] Add multiple targets to create a path-based rule**|*click to add*|
+
+1. Add Routing rules for App01
+
+|Name|Value|
+|-------|-----|
+|**Target type**|Backend pool|
+|**Path**|/App01|
+|**Target name**|App01|
+|**Backend settings**|appGatewayBackendHttpSettings|
+|**Backend target**|App01|
+
+Click Add.
+Then, cllick again in "**Add multiple targets to create a path-based rule**", and App a routing rule for App02:
+
+|Name|Value|
+|-------|-----|
+|**Target type**|Backend pool|
+|**Path**|/App02|
+|**Target name**|App02|
+|**Backend settings**|appGatewayBackendHttpSettings|
+|**Backend target**|App02|
+
+Click Add.
+Then, click in Add again, to Add entire Routing Rule
+
  #### Create Listeners
 
 ```bash
