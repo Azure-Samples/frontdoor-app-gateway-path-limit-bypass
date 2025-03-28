@@ -321,23 +321,92 @@ In Add routing rule page, add folowing values:
 9. Final, click in Add, to Add entire Routing Rule with paths to App01 and App02
 
 ### Configure Application Gateway appgtw-B for Segment B
-Now, repeat the last sections to configure the Application Gateway for Segment B
+Now, repeat the last sections to configure the Application Gateway for Segment B, routing to App03 and App04.
 
-#### Creating Front Door
+### Creating Front Door
 ```bash
 az afd profile create --profile-name fd-pathlimit --resource-group fd-appg-pathlimit --sku Premium_AzureFrontDoor
 
-az afd endpoint create --resource-group fd-appg-pathlimit --endpoint-name pathlimit --profile-name pathlimit --enabled-state Enabled
-
-# Segment A Origin Group
-az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentA-og --profile-name pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
-
-# Segment B Origin Group
-az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentB-og --profile-name pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
-
-## via Portal
+az afd endpoint create --resource-group fd-appg-pathlimit --endpoint-name fd-pathlimit --profile-name fd-pathlimit --enabled-state Enabled
 
 ```
+#### Creating Origin Group (Segment A and B)
+```bash
+
+# Segment A Origin Group
+az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentA-og --profile-name fd-pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
+
+# Segment B Origin Group
+az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentB-og --profile-name fd-pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
+
+```
+#### Creating Origin in Origin Group for Segment A
+In Azure Portal, search for Front Door, and click on fd-pathlimit profile.
+In Origin Groups, click on "SegmentA-og" / "+ Add an origin"
+![Environment](./media/4.origin01.png)
+
+Add a origin point to Application Gateway representing the Apps for Segment A, accoring with following values:
+
+|Name|Value|
+|-------|-----|
+|**Name**|SegmentA-origin|
+|**Origin Type**|Application Gateway|
+|**Host Name**|appgtw-A (Public IP xxx)|
+|**Origin host header**|*Leave default ip autofilled*|
+|**HTTP port**|*Leave default*|
+|**HTTPS port**|*Leave default*|
+|**Priority**|*Leave default*|
+|**Weight**|*Leave default*|
+
+![Environment](./media/4.origin02.png)
+
+Click "Add".
+And then click "Update" to update entire origin group with new origin.
+
+#### Creating Origin in Origin Group for Segment B
+Repeat the steps for "SegmentB-og", now point to appgtw-B.
+
+|Name|Value|
+|-------|-----|
+|**Name**|SegmentB-origin|
+|**Origin Type**|Application Gateway|
+|**Host Name**|appgtw-B (Public IP xxx)|
+|**Origin host header**|*Leave default ip autofilled*|
+|**HTTP port**|*Leave default*|
+|**HTTPS port**|*Leave default*|
+|**Priority**|*Leave default*|
+|**Weight**|*Leave default*|
+
+#### Creating Rules
+
+Now finally, lets create the rules for Front Door
+
+1. In Azure Portal, search for Front Door, and click on fd-pathlimit profile.
+2. In left menu, click on "Front Door Manager" / "Add route"
+![Environment](./media/5.route01.png)
+
+3. Add a route according following values
+
+|Name|Value|
+|-------|-----|
+|**Name**|segmentA-route|
+|**Endpoint**|*Leave default*|
+|**Host Name**|appgtw-B (Public IP xxx)|
+|**Domains**|*Leave default*|
+|**Patterns to match**|*/App01*|
+||*/App02*|
+|**Redirect**|***unchecked***|
+|**Origin path**|*Leave blank*|
+|**Origin path**|*Leave blank*|
+|**Forwarding protocol**|*Match incoming request*|
+|**Caching**|*Leave unchecked*|
+
+Click "Add", to add new route for Segment A
+
+> [!WARNING]
+> For test and demonstration purposes, we are working only in HTTP. For any kind of use (production / homolog / even desenv), it's recommended to use HTTPS protocol, marking redirect checkbox to "Redirect all traffic to use HTTPS" 
+
+
 ## Learn more
 [Azure Front Door documentation](https://learn.microsoft.com/en-us/azure/frontdoor/)
 
