@@ -341,11 +341,11 @@ az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-nam
 
 ```
 #### Creating Origin in Origin Group for Segment A
-In Azure Portal, search for Front Door, and click on fd-pathlimit profile.
-In Origin Groups, click on "SegmentA-og" / "+ Add an origin"
+1. In Azure Portal, search for Front Door, and click on fd-pathlimit profile.
+1. In Origin Groups, click on "SegmentA-og" / "+ Add an origin"
 ![Environment](./media/4.origin01.png)
 
-Add a origin point to Application Gateway representing the Apps for Segment A, accoring with following values:
+1. Add a origin point to Application Gateway representing the Apps for Segment A, accoring with following values:
 
 |Name|Value|
 |-------|-----|
@@ -360,8 +360,8 @@ Add a origin point to Application Gateway representing the Apps for Segment A, a
 
 ![Environment](./media/4.origin02.png)
 
-Click "Add".
-And then click "Update" to update entire origin group with new origin.
+1. Click "Add".
+1. And then click "Update" to update entire origin group with new origin.
 
 #### Creating Origin in Origin Group for Segment B
 Repeat the steps for "SegmentB-og", now point to appgtw-B.
@@ -377,7 +377,7 @@ Repeat the steps for "SegmentB-og", now point to appgtw-B.
 |**Priority**|*Leave default*|
 |**Weight**|*Leave default*|
 
-#### Creating Rules
+#### Creating Route for Segment A
 
 Now finally, lets create the rules for Front Door
 
@@ -391,20 +391,37 @@ Now finally, lets create the rules for Front Door
 |-------|-----|
 |**Name**|segmentA-route|
 |**Endpoint**|*Leave default*|
-|**Host Name**|appgtw-B (Public IP xxx)|
+|**Enable route**|checked|
 |**Domains**|*Leave default*|
 |**Patterns to match**|*/App01*|
 ||*/App02*|
 |**Redirect**|***unchecked***|
-|**Origin path**|*Leave blank*|
-|**Origin path**|*Leave blank*|
+|**Origin group**|*SegmentA-og*|
 |**Forwarding protocol**|*Match incoming request*|
 |**Caching**|*Leave unchecked*|
 
-Click "Add", to add new route for Segment A
+4. Click "Add", to add new route for Segment A
 
 > [!WARNING]
 > For test and demonstration purposes, we are working only in HTTP. For any kind of use (production / homolog / even desenv), it's recommended to use HTTPS protocol, marking redirect checkbox to "Redirect all traffic to use HTTPS" 
+
+![Environment](./media/5.route02.png)
+
+#### Creating Route for Segment B
+Now add a new role for Segment B, using /App03 and /App04, point to SegmentB-og Origin Group
+
+|Name|Value|
+|-------|-----|
+|**Name**|segmentB-route|
+|**Endpoint**|*Leave default*|
+|**Enable route**|checked|
+|**Domains**|*Leave default*|
+|**Patterns to match**|*/App03*|
+||*/App04*|
+|**Redirect**|***unchecked***|
+|**Origin group**|*SegmentB-og*|
+|**Forwarding protocol**|*Match incoming request*|
+|**Caching**|*Leave unchecked*|
 
 
 ## Learn more
