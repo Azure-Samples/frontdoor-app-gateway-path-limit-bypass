@@ -78,13 +78,13 @@ az aks get-credentials -n aks01 -g fd-appg-pathlimit
 kubectl create namespace aks-app
 
 #Deployment
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/aks01.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/aks01.yaml -n aks-app
 
 #service
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/service.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/service.yaml -n aks-app
 
 #ingress
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/ingress01.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/ingress01.yaml -n aks-app
 
 #verify
 kubectl get ingress -n aks-app
@@ -103,13 +103,13 @@ az aks get-credentials -n aks02 -g fd-appg-pathlimit
 kubectl create namespace aks-app
 
 #Deployment
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/aks02.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/aks02.yaml -n aks-app
 
 #service
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/service.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/service.yaml -n aks-app
 
 #ingress
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/ingress02.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/ingress02.yaml -n aks-app
 
 #verify
 kubectl get ingress -n aks-app
@@ -129,13 +129,13 @@ az aks get-credentials -n aks03 -g fd-appg-pathlimit
 kubectl create namespace aks-app
 
 #Deployment
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/aks03.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/aks03.yaml -n aks-app
 
 #service
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/service.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/service.yaml -n aks-app
 
 #ingress
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/ingress03.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/ingress03.yaml -n aks-app
 
 #verify
 kubectl get ingress -n aks-app
@@ -154,13 +154,13 @@ az aks get-credentials -n aks04 -g fd-appg-pathlimit
 kubectl create namespace aks-app
 
 #Deployment
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/aks04.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/aks04.yaml -n aks-app
 
 #service
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/service.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/service.yaml -n aks-app
 
 #ingress
-kubectl apply -f https://raw.githubusercontent.com/marcosoikawa/frontdoor-app-gateway-path-limit/refs/heads/main/deployments/ingress04.yaml -n aks-app
+kubectl apply -f https://raw.githubusercontent.com/Azure-Samples/frontdoor-app-gateway-path-limit-bypass/refs/heads/main/deployments/ingress04.yaml -n aks-app
 
 #verify
 kubectl get ingress -n aks-app
