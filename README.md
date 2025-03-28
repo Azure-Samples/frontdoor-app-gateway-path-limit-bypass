@@ -43,7 +43,7 @@ For lab proposes, in this sample it will use AKS for backend applications (under
 
 ![Environment](./media/1.5.png)
 
-> [!WARNING]
+> [!IMPORTANT]
 > For test the concept and demonstration purposes, we adopted a very simplified architecture. We recomment to check [MCSB - Microsoft cloud security benchmark](https://learn.microsoft.com/en-us/security/benchmark/azure/overview) to see the best practices of security adopted globally for many customers in cloud architects.
 
 
