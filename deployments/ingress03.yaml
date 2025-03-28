@@ -15,7 +15,7 @@ spec:
               name: aks-helloworld
               port:
                 number: 80
-          path: "/app03"
+          path: "/"
           pathType: Prefix
         - backend:
             service:

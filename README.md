@@ -346,7 +346,7 @@ az afd endpoint create --resource-group fd-appg-pathlimit --endpoint-name fd-pat
 az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentA-og --profile-name fd-pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
 
 # Segment B Origin Group
-az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentB-og --profile-name fd-pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
+az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentB-og --profile-name fd-pathlimit --enable-health-probe 1 --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
 
 ```
 #### Creating Origin in Origin Group for Segment A
