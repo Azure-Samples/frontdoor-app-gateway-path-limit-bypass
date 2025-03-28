@@ -242,10 +242,7 @@ Some configuration will be in Portal to better understand the concepts
 
 #### Add a listener on port 80.
 1. Go to: Application Gateway / Listeners / Add listener
-    
-![Environment](./media/3.AddListener.png)
-
-2. Add a listener according the values:
+1. Add a listener according the values:
 
 |Name|Value|
 |-------|-----|
@@ -256,11 +253,16 @@ Some configuration will be in Portal to better understand the concepts
 |**Listener type**|Basic|
 |**Bad Gateway - 502**|*leave blank*|
 |**Forbidden - 403**|*leave blank*|
+    
+![Environment](./media/3.AddListener.png)
+
+
+
 
 3. Click Add.
 
 #### Add a rule
-This the configuration that will route the /App01 and App02 to respecitives backends of applications.
+This the configuration that will route the /App01 and /App02 to respecitives backends of applications.
 
 1. In left menu, click on "Rules" / "+ Routing Rule"
 In Add routing rule page, add folowing values: 
@@ -272,8 +274,6 @@ In Add routing rule page, add folowing values:
 |**Listener**|appGateway80Listener|
 
 2. In Tab Backend targets, add the values of the following table:
-
-![Environment](./media/rule01.png)
 
 |Name|Value|
 |--------------|-----|
@@ -321,18 +321,23 @@ In Add routing rule page, add folowing values:
 9. Final, click in Add, to Add entire Routing Rule with paths to App01 and App02
 
 ### Configure Application Gateway appgtw-B for Segment B
-Now, repeat the last sections to configure the Application Gateway for Segment B, routing to App03 and App04.
+Now, repeat the last sections to configure the Application Gateway for Segment B, routing to /App03 and /App04.
 
 ### Creating Front Door
+
+Now, these are the steps to create and configure Front Door.
+
 ```bash
+
+#create Front Door profile
 az afd profile create --profile-name fd-pathlimit --resource-group fd-appg-pathlimit --sku Premium_AzureFrontDoor
 
+#create Front Door endpoint
 az afd endpoint create --resource-group fd-appg-pathlimit --endpoint-name fd-pathlimit --profile-name fd-pathlimit --enabled-state Enabled
-
 ```
 #### Creating Origin Group (Segment A and B)
-```bash
 
+```bash
 # Segment A Origin Group
 az afd origin-group create --resource-group fd-appg-pathlimit --origin-group-name SegmentA-og --profile-name fd-pathlimit --probe-request-type GET --probe-protocol Http --probe-interval-in-seconds 60 --probe-path / --sample-size 4 --successful-samples-required 3 --additional-latency-in-milliseconds 50
 
@@ -423,6 +428,10 @@ Now add a new role for Segment B, using /App03 and /App04, point to SegmentB-og 
 |**Forwarding protocol**|*Match incoming request*|
 |**Caching**|*Leave unchecked*|
 
+## Testing
+Now test to call url of Front Door with /App01, /App02, /App03 and /App04. You shoud see all application working with the routes we configured.
+
+![Environment](./media/6.testing01.png)
 
 ## Learn more
 [Azure Front Door documentation](https://learn.microsoft.com/en-us/azure/frontdoor/)
