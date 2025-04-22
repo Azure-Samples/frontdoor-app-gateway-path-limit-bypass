@@ -442,6 +442,48 @@ Now test to call url of Front Door with /App01, /App02, /App03 and /App04. You s
 
 [Application Gateway documentation](https://learn.microsoft.com/en-us/azure/application-gateway/overview)
 
+## Clean up resources
+If you no longer need the environment, you can delete all the resources you created. Deleting a resource group also removes all its contents. To avoid incurring unnecessary charges, we recommend deleting the resources you are not using.
+
+```bash
+az group delete --name fd-appg-pathlimit
+
+```
+## Shutting down and up resources
+If you are not using the environment but need to keep resources, your have a option to shutting down some of resouces, to keep the cost at minimum.
+
+```bash
+# Stop AKS01
+az aks stop --name aks01 --resource-group fd-appg-pathlimit
+# Stop AKS02
+az aks stop --name aks02 --resource-group fd-appg-pathlimit
+# Stop AKS03
+az aks stop --name aks03 --resource-group fd-appg-pathlimit
+# Stop AKS04
+az aks stop --name aks04 --resource-group fd-appg-pathlimit
+# Stop Application Gateway A
+az network application-gateway stop -g fd-appg-pathlimit -n appgtw-A
+# Stop Application Gateway B
+az network application-gateway stop -g fd-appg-pathlimit -n appgtw-B
+
+```
+To start the resources again, you can run:
+
+```bash
+# Stop AKS01
+az aks start --name aks01 --resource-group fd-appg-pathlimit
+# Stop AKS02
+az aks start --name aks02 --resource-group fd-appg-pathlimit
+# Stop AKS03
+az aks start --name aks03 --resource-group fd-appg-pathlimit
+# Stop AKS04
+az aks start --name aks04 --resource-group fd-appg-pathlimit
+# Stop Application Gateway A
+az network application-gateway start -g fd-appg-pathlimit -n appgtw-A
+# Stop Application Gateway B
+az network application-gateway start -g fd-appg-pathlimit -n appgtw-B
+
+```
 
 ## Feedbacks
 
