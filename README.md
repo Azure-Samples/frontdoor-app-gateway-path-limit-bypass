@@ -31,7 +31,7 @@ In large customers sometimes applications is distribuited under subdomains, and 
 The proposed solution for this scenario is to have a combination of Azure Front Door with Application Gateways in sequence. With this architecture, we increase drascally the capability of paths the solution can handle, reaching the limit of 5000 routing limit described in [Front Door routing limits](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-routing-limits).
 
 > [!IMPORTANT]
-> Consider require HTTPS for inbound traffic if you are about to reach this limit. As each http path count as a composite route metric, the limit of 5000 turn to 2500. Consult this doc to more details: [Front Door routing limits](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-routing-limits)
+> Consider require HTTPS for inbound traffic if you are about to reach this limit. As each http path count as one more composite route metric, the limit of 5000 turns to 2500. Consult this doc to more details: [Front Door routing limits](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-routing-limits)
 
 ![Environment](./media/1.4.png)
 
