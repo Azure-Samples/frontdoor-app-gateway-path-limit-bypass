@@ -13,7 +13,7 @@ Tags: Azure, Application Gateway, Azure Front Door
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Azure-Samples/frontdoor-app-gateway-path-limit-bypass)
 
-This lab intends to help to handle the limit of routing paths of 200 origins of Front Door and / or 100 backends of Application Gateway, for very large deployments / migrations where all applications is under a unique URL and distributed by paths.
+This lab intends to help to handle the limit of routing paths of 200 origins of Front Door and / or 100 backends of Application Gateway, for very large deployments / migrations where all applications is under a **unique URL** and distributed by paths.
 
 ## Context
 In large customers sometimes applications is distribuited under subdomains, and sometimes, under a unique subdomain they have more than 200 applications under different paths.
@@ -28,7 +28,10 @@ In large customers sometimes applications is distribuited under subdomains, and 
 
 ## Architecture diagram
 
-The proposed solution for this scenario is to have a combination of Azure Front Door with Application Gateways in sequence. With this architecture, we increase the capability of path up to 20,000 applications paths (200 origin groups x 100 backend pools)
+The proposed solution for this scenario is to have a combination of Azure Front Door with Application Gateways in sequence. With this architecture, we increase drascally the capability of paths the solution can handle, reaching the limit of 5000 routing limit described in [Front Door routing limits](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-routing-limits).
+
+> [!IMPORTANT]
+> Consider require HTTPS for inbound traffic if you are about to reach this limit. As each http path count as a composite route metric, the limit of 5000 turn to 2500. Consult this doc to more details: [Front Door routing limits](https://learn.microsoft.com/en-us/azure/frontdoor/front-door-routing-limits)
 
 ![Environment](./media/1.4.png)
 
