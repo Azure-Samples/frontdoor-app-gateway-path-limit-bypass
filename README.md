@@ -297,7 +297,7 @@ In Add routing rule page, add folowing values:
 |Name|Value|
 |-------|-----|
 |**Target type**|Backend pool|
-|**Path**|/App01|
+|**Path**|/App01/*|
 |**Target name**|App01|
 |**Backend settings**|appGatewayBackendHttpSettings|
 |**Backend target**|App01|
@@ -402,8 +402,8 @@ Now finally, lets create the rules for Front Door
 |**Endpoint**|*Leave default*|
 |**Enable route**|checked|
 |**Domains**|*Leave default*|
-|**Patterns to match**|*/App01*|
-||*/App02*|
+|**Patterns to match**|*/App01/**|
+||*/App02/**|
 |**Redirect**|***unchecked***|
 |**Origin group**|*SegmentA-og*|
 |**Forwarding protocol**|*Match incoming request*|
