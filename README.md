@@ -453,7 +453,7 @@ az group delete --name fd-appg-pathlimit
 
 ```
 ## Shutting down and up resources
-If you are not using the environment but need to keep resources, your have a option to shutting down some of resouces, to keep the cost at minimum.
+If you are not using the environment but need to keep resources, you have a option to shutting down some of resouces, to keep the cost at minimum as possible.
 
 ```bash
 # Stop AKS01
